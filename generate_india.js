@@ -2,34 +2,30 @@ const puppeteer = require('puppeteer');
 const fs = require('fs');
 const path = require('path');
 
-// --- US University Data ---
+// --- Indian University Data ---
 const universities = [
-    { "name": "San Jose State University", "logo_url": "https://seeklogo.com/images/S/san-jose-state-university-logo-FAD1EA3B8A-seeklogo.com.png" },
-    { "name": "University of North Texas", "logo_url": "https://tse1.mm.bing.net/th/id/OIP.2wJ6pDuopBlgl5wiApvuvgHaHa?pid=Api&P=0&h=220" },
-    { "name": "Portland State University", "logo_url": "https://vectorseek.com/wp-content/uploads/2023/08/Portland-State-University-Logo-Vector.svg-.png" },
-    { "name": "University of Central Florida", "logo_url": "https://seeklogo.com/images/U/university-of-central-florida-logo-9C0F54E2F6-seeklogo.com.png" },
-    { "name": "Eastern Michigan University", "logo_url": "https://tse3.mm.bing.net/th/id/OIP.b1DVHb8mvxpO9dE6HViU-AHaFj?pid=Api&P=0&h=220" },
-    { "name": "Boise State University", "logo_url": "https://tse2.mm.bing.net/th/id/OIP.YS_1h0udiX2E8YY5UdFt9wHaHa?pid=Api&P=0&h=220" },
-    { "name": "Northern Illinois University", "logo_url": "https://tse3.mm.bing.net/th/id/OIP.oI7ObAOuT8TOUZ4snGO2GgHaCr?pid=Api&P=0&h=220" },
-    { "name": "Western Kentucky University", "logo_url": "https://tse1.mm.bing.net/th/id/OIP.yXKvG0fyeqbfRwwPN-VbBAHaHa?pid=Api&P=0&h=220" },
-    { "name": "Appalachian State University", "logo_url": "https://logowik.com/content/uploads/images/appalachian-state-university9105.jpg" }
+    // { "name": "University of Delhi", "logo_url": "https://upload.wikimedia.org/wikipedia/commons/6/62/Delhi_University%27s_official_logo.png" },
+    { "name": "IIM Bangalore", "logo_url": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcThnWEFNAwfrO_g7WZj4XMyiecwYFcsObAMFw&s" },
+    // { "name": "Osmania University", "logo_url": "https://seeklogo.com/images/O/osmania-university-logo-EDAE9EE2A9-seeklogo.com.png" },
+    // { "name": "Amrita Vishwa Vidyapeetham", "logo_url": "https://upload.wikimedia.org/wikipedia/en/thumb/3/30/Amrita_Vishwa_Vidyapeetham_-_Logo_Icon.svg/1200px-Amrita_Vishwa_Vidyapeetham_-_Logo_Icon.svg.png" },
+    // { "name": "Jamia Millia Islamia", "logo_url": "https://upload.wikimedia.org/wikipedia/en/thumb/2/2a/Jamia_Millia_Islamia_Logo.svg/1200px-Jamia_Millia_Islamia_Logo.svg.png" },
+    { "name": "Christ University", "logo_url": "https://upload.wikimedia.org/wikipedia/en/d/dd/Official_Logo_of_CHRIST%28Deemed_to_be_University%29%2C_bangalore.jpg" }
 ];
 
-
 // --- Name Lists ---
-const usMaleFirstNames = ['Noah', 'Liam', 'Oliver', 'Elijah', 'James', 'William', 'Benjamin', 'Lucas', 'Henry', 'Theodore', 'Jack', 'Levi', 'Alexander', 'Daniel', 'Jackson', 'Maverick', 'Matthew', 'Aiden', 'Ethan', 'Sebastian', 'Michael', 'Ezra', 'Hudson', 'Rowan', 'Mason', 'Milo'];
-const usFemaleFirstNames = ['Olivia', 'Emma', 'Charlotte', 'Amelia', 'Ava', 'Sophia', 'Isabella', 'Mia', 'Evelyn', 'Luna', 'Harper', 'Camila', 'Gianna', 'Elizabeth', 'Eleanor', 'Ella', 'Chloe', 'Scarlett', 'Layla', 'Penelope', 'Riley', 'Zoe', 'Nora', 'Mila'];
-const usLastNames = ['Smith', 'Johnson', 'Williams', 'Brown', 'Jones', 'Garcia', 'Miller', 'Davis', 'Rodriguez', 'Martinez', 'Hernandez', 'Lopez', 'Gonzales', 'Wilson', 'Anderson', 'Thomas', 'Taylor', 'Moore', 'Jackson', 'Martin', 'Lee', 'Perez', 'Thompson', 'White', 'Harris', 'Sanchez', 'Clark', 'Ramirez', 'Lewis', 'Robinson', 'Walker', 'Young', 'Allen', 'King'];
-const programs = { 'Engineering': { prefix: 'B.S.', departments: ['Computer Science', 'Mechanical Engineering', 'Electrical Engineering', 'Civil Engineering'] }, 'Arts': { prefix: 'B.A.', departments: ['History', 'Economics', 'Political Science', 'Sociology'] }, 'Science': { prefix: 'B.S.', departments: ['Physics', 'Chemistry', 'Mathematics', 'Biology'] } };
+const indianMaleFirstNames = ['Aarav', 'Vivaan', 'Aditya', 'Vihaan', 'Arjun', 'Sai', 'Reyansh', 'Ayaan', 'Krishna', 'Ishaan', 'Mohammed', 'Shaurya', 'Atharv', 'Advik', 'Kabir', 'Ansh', 'Dhruv', 'Aryan', 'Rudra', 'Veer', 'Yash', 'Rohan', 'Neel', 'Dev', 'Samarth', 'Ritvik', 'Kartik', 'Kian', 'Zayn', 'Parth', 'Ravi', 'Rajesh', 'Sanjay', 'Amit', 'Prakash', 'Vikram', 'Anil', 'Suresh', 'Manoj', 'Gopal', 'Hari', 'Deepak', 'Naveen', 'Ashok', 'Mahesh', 'Rahul'];
+const indianFemaleFirstNames = ['Saanvi', 'Aanya', 'Aadhya', 'Aaradhya', 'Ananya', 'Pari', 'Diya', 'Myra', 'Anika', 'Avani', 'Kiara', 'Aisha', 'Isha', 'Riya', 'Siya', 'Navya', 'Zara', 'Fatima', 'Shanaya', 'Amaira', 'Aditi', 'Kavya', 'Ira', 'Tara', 'Ishita', 'Sia', 'Anvi', 'Prisha', 'Naisha', 'Eva', 'Priya', 'Pooja', 'Sunita', 'Geeta', 'Lakshmi', 'Sita', 'Meena', 'Kavita', 'Usha', 'Anjali', 'Rekha', 'Savita', 'Radha', 'Mala'];
+const indianLastNames = ['Sharma', 'Verma', 'Gupta', 'Singh', 'Patel', 'Kumar', 'Das', 'Shah', 'Mehta', 'Reddy', 'Yadav', 'Jain', 'Agarwal', 'Mishra', 'Pandey', 'Tiwari', 'Dubey', 'Chauhan', 'Rathore', 'Joshi', 'Khan', 'Nair', 'Menon', 'Pillai', 'Rao', 'Naidu', 'Chopra', 'Malhotra', 'Kapoor', 'Khanna', 'Desai', 'Jha', 'Sinha', 'Choudhary', 'Thakur', 'Bose', 'Ghosh', 'Banerjee', 'Iyer'];
+const programs = {'Engineering': {prefix: 'BTECH', departments: ['Computer Science', 'Mechanical Engineering', 'Electrical Engineering', 'Civil Engineering']}, 'Arts': {prefix: 'BA', departments: ['History', 'Economics', 'Political Science', 'Sociology']}, 'Science': {prefix: 'BSC', departments: ['Physics', 'Chemistry', 'Mathematics', 'Biology']}};
 
-function createRealisticUSStudent(gender) {
+function createRealisticIndianStudent(gender) {
     const university = universities[Math.floor(Math.random() * universities.length)];
     const age = 18 + Math.floor(Math.random() * 7);
     const currentYear = new Date().getFullYear();
     const birthYear = currentYear - age;
     const birthMonth = 1 + Math.floor(Math.random() * 12);
     const birthDay = 1 + Math.floor(Math.random() * 28);
-    const dob = `${String(birthMonth).padStart(2, '0')}/${String(birthDay).padStart(2, '0')}/${birthYear}`;
+    const dob = `${birthYear}-${String(birthMonth).padStart(2, '0')}-${String(birthDay).padStart(2, '0')}`;
     const programKeys = Object.keys(programs);
     const randomProgramKey = programKeys[Math.floor(Math.random() * programKeys.length)];
     const programInfo = programs[randomProgramKey];
@@ -38,13 +34,13 @@ function createRealisticUSStudent(gender) {
     const startYear = currentYear - Math.floor(Math.random() * 4);
     const endYear = startYear + 4;
     const course = `${startYear} - ${endYear}`;
-    const studentClass = `${classPrefix}-${department.replace(/\s/g, '').slice(0, 3).toUpperCase()}-${startYear}`;
-    const randomStudentId = Math.floor(100000000 + Math.random() * 900000000);
-    const studentId = randomStudentId.toString();
-    const firstName = gender === 'male' ? usMaleFirstNames[Math.floor(Math.random() * usMaleFirstNames.length)] : usFemaleFirstNames[Math.floor(Math.random() * usFemaleFirstNames.length)];
-    const lastName = usLastNames[Math.floor(Math.random() * usLastNames.length)];
+    const studentClass = `${classPrefix}-${department.slice(0, 3).toUpperCase()}-${startYear}`;
+    const randomDigits = Math.floor(1000000 + Math.random() * 9000000);
+    const studentId = `${classPrefix.slice(0, 2)}${startYear}.${randomDigits}`;
+    const firstName = gender === 'male' ? indianMaleFirstNames[Math.floor(Math.random() * indianMaleFirstNames.length)] : indianFemaleFirstNames[Math.floor(Math.random() * indianFemaleFirstNames.length)];
+    const lastName = indianLastNames[Math.floor(Math.random() * indianLastNames.length)];
     const name = `${firstName} ${lastName}`;
-    const validUntil = `09/30/${endYear}`;
+    const validUntil = `15/07/${endYear}`;
 
     return { name, dob, course, class: studentClass, department, validUntil, studentId, gender, university, startYear, endYear };
 }
@@ -52,14 +48,14 @@ function createRealisticUSStudent(gender) {
 async function generateCards() {
     const baseImagesDir = path.join(__dirname, 'images');
     const outputDir = path.join(__dirname, 'output');
-    const genders = ['male', 'female_my'];
+    const genders = ['male', 'female'];
 
     if (!fs.existsSync(baseImagesDir)) {
         console.log('❌ "images" directory not found. Creating a sample directory structure...');
         fs.mkdirSync(baseImagesDir);
         fs.mkdirSync(path.join(baseImagesDir, 'male'));
-        fs.mkdirSync(path.join(baseImagesDir, 'female_my'));
-        console.log('✅ Created "images/male" and "images/female_my" directories. Please add photos and run again.');
+        fs.mkdirSync(path.join(baseImagesDir, 'female'));
+        console.log('✅ Created "images/male" and "images/female" directories. Please add photos and run again.');
         return;
     }
     if (!fs.existsSync(outputDir)) fs.mkdirSync(outputDir);
@@ -78,9 +74,9 @@ async function generateCards() {
         console.log(`\n✅ Found ${imageFiles.length} images in "${gender}" directory. Starting to process...`);
 
         for (const photoFile of imageFiles) {
-            const studentData = createRealisticUSStudent(gender);
+            const studentData = createRealisticIndianStudent(gender);
             studentData.photoUrl = `file://${path.join(imagesDir, photoFile)}`;
-
+            
             console.log(`   -> ${studentData.university.name}: ${studentData.name}...`);
             const studentOutputDir = path.join(outputDir, `${studentData.university.name.replace(/\s/g, '_')}_${studentData.studentId}`);
             if (!fs.existsSync(studentOutputDir)) fs.mkdirSync(studentOutputDir, { recursive: true });
@@ -91,7 +87,7 @@ async function generateCards() {
             await cardPage.evaluate((data) => {
                 const uniLogo = document.getElementById('uni-logo');
                 if (uniLogo) uniLogo.src = data.university.logo_url;
-
+                
                 const uniName = document.getElementById('uni-name');
                 if (uniName) uniName.textContent = data.university.name;
 
@@ -120,7 +116,7 @@ async function generateCards() {
                 if (studentId) studentId.textContent = data.studentId;
             }, studentData);
             const cardElement = await cardPage.$('.student-card-container');
-            if (cardElement) {
+            if(cardElement) {
                 await cardElement.screenshot({
                     path: path.join(studentOutputDir, 'student_card.png'),
                     omitBackground: true
@@ -142,7 +138,7 @@ async function generateCards() {
                 if (receiptId) receiptId.textContent = `FEE-REC-${Math.floor(Math.random() * 100000000)}`;
 
                 const receiptDate = document.getElementById('receipt-date');
-                if (receiptDate) receiptDate.textContent = new Date().toLocaleDateString('en-US');
+                if (receiptDate) receiptDate.textContent = new Date().toLocaleDateString('en-GB');
 
                 const studentNameReceipt = document.getElementById('student-name-receipt');
                 if (studentNameReceipt) studentNameReceipt.textContent = data.name;
@@ -155,9 +151,9 @@ async function generateCards() {
 
                 const studentDepartmentReceipt = document.getElementById('student-department-receipt');
                 if (studentDepartmentReceipt) studentDepartmentReceipt.textContent = data.department;
-
+                
                 const feeAmount = document.getElementById('fee-amount');
-                if (feeAmount) feeAmount.textContent = (Math.floor(Math.random() * (20000 - 5000 + 1)) + 5000).toLocaleString('en-US');
+                if (feeAmount) feeAmount.textContent = (Math.floor(Math.random() * (20000 - 5000 + 1)) + 5000).toLocaleString('en-IN');
             }, studentData);
             await receiptPage.pdf({
                 path: path.join(studentOutputDir, 'registration_fee_receipt.pdf'),
@@ -171,35 +167,35 @@ async function generateCards() {
             await letterPage.goto(`file://${path.join(__dirname, 'official_letter.html')}`, { waitUntil: 'networkidle0' });
             await letterPage.evaluate((data) => {
                 const today = new Date();
-                const formattedDate = today.toLocaleDateString('en-US', { day: '2-digit', month: 'long', year: 'numeric' });
-
+                const formattedDate = today.toLocaleDateString('en-GB', { day: '2-digit', month: 'long', year: 'numeric' });
+                
                 const uniLogoLetter = document.getElementById('uni-logo-letter');
                 if (uniLogoLetter) uniLogoLetter.src = data.university.logo_url;
 
                 const uniNameLetter = document.getElementById('uni-name-letter');
                 if (uniNameLetter) uniNameLetter.textContent = data.university.name;
-
+                
                 const letterDate = document.getElementById('letter-date');
                 if (letterDate) letterDate.textContent = formattedDate;
-
+                
                 const studentNameLetter = document.getElementById('student-name-letter');
                 if (studentNameLetter) studentNameLetter.textContent = data.name;
-
+                
                 const studentIdLetter = document.getElementById('student-id-letter');
                 if (studentIdLetter) studentIdLetter.textContent = data.studentId;
-
+                
                 const studentCourseLetter = document.getElementById('student-course-letter');
                 if (studentCourseLetter) studentCourseLetter.textContent = data.course;
-
+                
                 const studentDepartmentLetter = document.getElementById('student-department-letter');
                 if (studentDepartmentLetter) studentDepartmentLetter.textContent = data.department;
-
+                
                 const studentStartYear = document.getElementById('student-start-year');
                 if (studentStartYear) studentStartYear.textContent = data.startYear;
-
+                
                 const studentEndYear = document.getElementById('student-end-year');
                 if (studentEndYear) studentEndYear.textContent = data.endYear;
-
+                
                 const uniNameSignature = document.getElementById('uni-name-signature');
                 if (uniNameSignature) uniNameSignature.textContent = data.university.name;
             }, studentData);
@@ -217,15 +213,15 @@ async function generateCards() {
     }
 
     await browser.close();
-
+    
     if (totalFilesProcessed > 0) {
-        console.log(`\n🚀 Hoàn tất! Đã tạo tổng cộng ${totalFilesProcessed} bộ tài liệu.`);
+        console.log(`\n🚀 Success! A total of ${totalFilesProcessed} document sets have been created.`);
     } else {
-        console.log('\n🔴 Không có ảnh nào được xử lý.');
+        console.log('\n🔴 No images were processed.');
     }
 }
 
 generateCards().catch(err => {
-    console.error('❌ Đã xảy ra lỗi nghiêm trọng:', err);
+    console.error('❌ A serious error occurred:', err);
     process.exit(1);
 });

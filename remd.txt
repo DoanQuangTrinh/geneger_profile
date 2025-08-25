@@ -1,0 +1,2 @@
+node generate_india.js  ( ấn độ )
+node generate.js  ( us )
